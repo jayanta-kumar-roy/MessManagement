@@ -16,6 +16,7 @@
       <th scope="col">Student Name</th>
       <th scope="col">Food</th>
       <th scope="col">Price</th>
+      <th scope="col">Date</th>
     </tr>
   </thead>
   <tbody>
@@ -26,6 +27,7 @@
       <td>{{ order.student.name }}</td>
       <td>{{ order.food.name}}</td>
       <td>{{ order.food.price}}</td>
+      <td>{{ order.date_created }}</td>
     </tr>
   {% endfor %}
   </tbody>

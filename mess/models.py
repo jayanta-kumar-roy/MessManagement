@@ -1,8 +1,10 @@
 # from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Student(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     rollno = models.BigIntegerField(unique=True)
 

@@ -1,0 +1,15 @@
+{%  extends "mess/base.html" %}
+
+{% block content %}
+    <h1>Place your order here</h1>
+
+    <div class="col">
+            <div class="card card-body">
+                <form method="post">
+                 {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary" type="submit">Submit</button>
+              </form>
+            </div>
+    </div>
+{% endblock %}

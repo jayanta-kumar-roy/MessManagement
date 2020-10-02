@@ -1,12 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Student,Food,Order
 from .filters import OrderFilter
-from .forms import DataForm
+from .forms import DataForm,OrderForm
 
+
+# Create your views here.
 def home(request):
     context={}
     return render(request,'mess/home.html',context)
+
+def registerPage(request):
+    context={}
+    return render(request,'mess/register.html',context)
+
+def loginPage(request):
+    context={}
+    return render(request,'mess/login.html',context)
+
 
 def allOrder(request):
     Orders = Order.objects.all()
@@ -55,4 +66,20 @@ def bill(request):
         }
 
         return render(request, 'mess/bill.html', context)
-# Create your views here.
+
+def placeOrder(request):
+    context = {}
+
+    form = OrderForm()
+
+    context={
+        'form':form,
+    }
+
+    if request.method=='POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    return render(request, 'mess/placeOrder.html', context)
