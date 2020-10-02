@@ -1,0 +1,40 @@
+{% extends 'mess/base.html' %}
+
+{% block content %}
+    <h1>Its BILL</h1>
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+    </form>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h1 class="card-title">Student</h1>
+                <h3>{{ name }}</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h1 class="card-title">Total Bill</h1>
+                       <h3>{{ total }}</h3>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+{% endblock %}
