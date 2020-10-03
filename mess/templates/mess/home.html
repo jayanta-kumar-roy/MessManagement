@@ -1,5 +1,9 @@
 {%  extends "mess/base.html" %}
 {% block content %}
+    {% for message in messages %}
+        <p id="messages">{{ message }}</p>
+    {% endfor%}
 
-    <h1>This is Home Page</h1>
+    <h1>Welcome,{{ request.user.student.name }}</h1>
+    <h1>Please place your order</h1>
 {% endblock %}

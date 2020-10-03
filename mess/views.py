@@ -2,8 +2,12 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Student,Food,Order
 from .filters import OrderFilter
-from .forms import DataForm,OrderForm
+from .forms import DataForm,OrderForm,StudentForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth import authenticate,login,logout
 
 # Create your views here.
 def home(request):
@@ -11,13 +15,42 @@ def home(request):
     return render(request,'mess/home.html',context)
 
 def registerPage(request):
-    context={}
+    userForm = UserCreationForm()
+    studentForm=StudentForm()
+    if request.method =='POST':
+        userForm=UserCreationForm(request.POST)
+        studentForm = StudentForm(request.POST)
+        if userForm.is_valid() and studentForm.is_valid() :
+            user=userForm.save()
+            student = studentForm.save(commit=False)
+            student.user = user
+            student.save()
+
+            messages.success(request,'Account created for '+user.username)
+            return redirect('login')
+
+
+    context={'userForm':userForm,'studentForm':studentForm}
     return render(request,'mess/register.html',context)
 
 def loginPage(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        user = authenticate(request,username=username,password=password)
+
+        if user is not None:
+            login(request,user)
+            return redirect('/')
+        else:
+            messages.info(request,'Username or password is incorrect')
+
     context={}
     return render(request,'mess/login.html',context)
 
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
 
 def allOrder(request):
     Orders = Order.objects.all()
@@ -67,10 +100,11 @@ def bill(request):
 
         return render(request, 'mess/bill.html', context)
 
+@login_required(login_url='login')
 def placeOrder(request):
     context = {}
 
-    form = OrderForm()
+    form = OrderForm(initial={'student':request.user.student})
 
     context={
         'form':form,
